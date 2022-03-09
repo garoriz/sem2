@@ -13,6 +13,9 @@ public class CreateUserDto {
     @NotBlank(message = "Password shouldn't be blank!")
     private String password;
 
+    public CreateUserDto() {
+    }
+
     public String getName() {
         return name;
     }
