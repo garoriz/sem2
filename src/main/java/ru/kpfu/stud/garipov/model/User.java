@@ -28,7 +28,13 @@ public class User {
     )
     private Set<Role> roles;
 
-    public User() {}
+    @Column(length = 64)
+    private String verificationCode;
+
+    private boolean enabled;
+
+    public User() {
+    }
 
     public void setId(Integer id) {
         this.id = id;
@@ -70,9 +76,26 @@ public class User {
         this.roles = roles;
     }
 
-    public User(String name, String email, String password) {
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public User(String name, String email, String password, String verificationCode) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.verificationCode = verificationCode;
     }
 }

@@ -1,20 +1,15 @@
 package ru.kpfu.stud.garipov.controller;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import ru.kpfu.stud.garipov.dto.CreateUserDto;
 import ru.kpfu.stud.garipov.dto.UserDto;
-import ru.kpfu.stud.garipov.helper.PasswordHelper;
-import ru.kpfu.stud.garipov.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.kpfu.stud.garipov.repository.UserRepository;
 import ru.kpfu.stud.garipov.service.UserService;
 
-import javax.validation.Valid;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import static ru.kpfu.stud.garipov.dto.UserDto.fromModel;
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class UserController {
@@ -38,15 +33,19 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PostMapping("/user")
-    @ResponseBody
-    public UserDto createUser(@Valid @RequestBody CreateUserDto user) {
-        return userService.save(user);
+    @PostMapping("/sign_up")
+    public String signUp(@ModelAttribute(name = "user") CreateUserDto userDto, HttpServletRequest request) throws MessagingException {
+        String url = request.getRequestURL().toString().replace(request.getServletPath(), "");
+        userService.signUp(userDto, url);
+        return "sign_up_success";
     }
 
-    @PostMapping("/sign_up")
-    public String signUp(@ModelAttribute(name = "user") CreateUserDto userDto) {
-        userService.save(userDto);
-        return "sign_up_success";
+    @GetMapping("/verify")
+    public String verify(@Param("code") String code) {
+        if (userService.verify(code)) {
+            return "verification_success";
+        } else {
+            return "verification_failed";
+        }
     }
 }
