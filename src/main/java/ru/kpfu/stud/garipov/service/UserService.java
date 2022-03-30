@@ -7,7 +7,6 @@ import javax.mail.MessagingException;
 import java.util.List;
 
 public interface UserService {
-    UserDto getByEmail(String email);
 
     UserDto getById(Integer id);
 

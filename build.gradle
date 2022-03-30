@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.6.3'
     id 'org.liquibase.gradle' version '2.1.0'
+    id 'jacoco'
 }
 
 group 'ru.kpfu.stud.garipov'
@@ -20,7 +21,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}"
     implementation 'org.postgresql:postgresql:42.3.3'
     implementation "org.webjars:jquery:3.6.0"
-    implementation 'org.webjars:bootstrap:5.1.1'
+    implementation 'org.webjars:bootstrap:5.1.3'
     implementation 'org.webjars:webjars-locator-core:0.50'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5:3.0.4.RELEASE'
     implementation 'org.thymeleaf:thymeleaf-spring5:3.0.15.RELEASE'
@@ -31,11 +32,12 @@ dependencies {
     liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:3.0.2'
     liquibaseRuntime 'info.picocli:picocli:4.6.3'
 
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor:2.6.4'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:${springBootVersion}"
 
     testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
     testImplementation 'com.h2database:h2:2.1.210'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.springframework.security:spring-security-test:5.6.2'
 }
 
 def props = new Properties()
@@ -54,5 +56,21 @@ liquibase {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnit()
+    finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'ru/kpfu/stud/garipov/dto',
+                    'ru/kpfu/stud/garipov/model',
+                    'ru/kpfu/stud/garipov/security',
+                    'ru/kpfu/stud/garipov/advice',
+            ])
+        }))
+    }
 }

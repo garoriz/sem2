@@ -40,11 +40,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getByEmail(String email) {
-        return userRepository.getUserByEmail(email).map(UserDto::fromModel).orElse(null);
-    }
-
-    @Override
     public UserDto getById(Integer id) {
         return userRepository.findById(id).map(UserDto::fromModel).orElse(null);
     }
@@ -55,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto signUp(CreateUserDto createUserDto, String url) throws MessagingException {
+    public UserDto signUp(CreateUserDto createUserDto, String url) {
         String code = RandomString.make(64);
         String encodedPassword = encoder.encode(createUserDto.getPassword());
         User user = new User(createUserDto.getName(), createUserDto.getEmail(), encodedPassword, code);
