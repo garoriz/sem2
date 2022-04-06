@@ -2,6 +2,7 @@ package ru.kpfu.stud.garipov.controller;
 
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import ru.kpfu.stud.garipov.aspect.Loggable;
 import ru.kpfu.stud.garipov.dto.CreateUserDto;
 import ru.kpfu.stud.garipov.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +24,20 @@ public class UserController {
 
     @GetMapping("/user")
     @ResponseBody
+    @Loggable
     public Iterable<UserDto> getAll() {
         return userService.getAll();
     }
 
     @GetMapping("/user/{id}")
     @ResponseBody
+    @Loggable
     public UserDto get(@PathVariable Integer id) {
         return userService.getById(id);
     }
 
     @PostMapping("/sign_up")
+    @Loggable
     public String signUp(@ModelAttribute(name = "user") CreateUserDto userDto, HttpServletRequest request) throws MessagingException {
         String url = request.getRequestURL().toString().replace(request.getServletPath(), "");
         userService.signUp(userDto, url);
@@ -41,6 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/verify")
+    @Loggable
     public String verify(@Param("code") String code) {
         if (userService.verify(code)) {
             return "verification_success";

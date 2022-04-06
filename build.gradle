@@ -19,6 +19,7 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-thymeleaf:${springBootVersion}"
     implementation "org.springframework.boot:spring-boot-starter-mail:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-aop:${springBootVersion}"
     implementation 'org.postgresql:postgresql:42.3.3'
     implementation "org.webjars:jquery:3.6.0"
     implementation 'org.webjars:bootstrap:5.1.3'

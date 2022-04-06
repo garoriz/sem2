@@ -3,6 +3,7 @@ package ru.kpfu.stud.garipov.controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kpfu.stud.garipov.aspect.Loggable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class WeatherController {
 
     @GetMapping("/weather")
+    @Loggable
     public String weather(@RequestParam Optional<String> city) {
         return getWeather(city);
     }
