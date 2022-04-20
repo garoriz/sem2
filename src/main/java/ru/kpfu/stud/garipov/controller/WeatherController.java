@@ -1,5 +1,9 @@
 package ru.kpfu.stud.garipov.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +21,14 @@ import java.util.Optional;
 @RestController
 public class WeatherController {
 
+    @Operation(summary = "Returns weather in city")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Weather in city",
+                    content = {
+                            @Content(mediaType = "application/json")
+                    }
+            )
+    })
     @GetMapping("/weather")
     @Loggable
     public String weather(@RequestParam Optional<String> city) {
